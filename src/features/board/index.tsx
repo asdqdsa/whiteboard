@@ -1,3 +1,1 @@
-export function BoardPage() {
-  return <div>Board page</div>;
-}
+// export { BoardPage } from './board.page';

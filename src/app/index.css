@@ -1,3 +1,14 @@
 * {
-  color: red;
+  --text-primary: #e6c8a8;
+  --bg: #231913;
+}
+
+* {
+  color: var(--text-primary);
+  background-color: var(--bg);
+}
+
+::selection {
+  background-color: #ffd4aa;
+  color: #1a1a11;
 }
