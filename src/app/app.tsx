@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 export function App() {
   return (
-    <div>
+    <div className='bg-amber-100 min-h-screen'>
       <AppHeader />
       <Outlet />
     </div>
