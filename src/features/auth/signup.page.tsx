@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AuthLayout } from './auth-layout';
+import { AuthLayout } from './ui/auth-layout';
 import { ROUTES } from '@/shared/model/routes';
-import { SignupForm } from './signup-form';
+import { SignupForm } from './ui/signup-form';
 
 function SignupPage() {
   return (

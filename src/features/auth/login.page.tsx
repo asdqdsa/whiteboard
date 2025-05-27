@@ -1,8 +1,8 @@
 // import { rqClient } from '@/shared/api/instance';
 import { ROUTES } from '@/shared/model/routes';
 import { Link } from 'react-router-dom';
-import { AuthLayout } from './auth-layout';
-import { LoginForm } from './login-form';
+import { AuthLayout } from './ui/auth-layout';
+import { LoginForm } from './ui/login-form';
 
 export function LoginPage() {
   // const loginMutation = rqClient.useMutation('post', '/auth/login');

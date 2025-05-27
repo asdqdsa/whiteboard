@@ -1,4 +1,4 @@
-import { HttpResponse } from 'msw';
+import { delay, HttpResponse } from 'msw';
 import { http } from '@/shared/api/mocks/http';
 import type { ApiSchemas } from '@/shared/api/schema';
 
@@ -21,10 +21,12 @@ export const authHandlers = [
     const user = mockUsers.find((u) => u.email === body.email);
     const storedPassword = userPasswords.get(body.email);
 
+    await delay(1200);
+
     if (!user || !storedPassword || storedPassword !== body.password) {
       return HttpResponse.json(
         {
-          message: 'Неверный email или пароль',
+          message: 'Incorrect email or password',
           code: 'INVALID_CREDENTIALS',
         },
         { status: 401 }
@@ -47,7 +49,7 @@ export const authHandlers = [
     if (mockUsers.some((u) => u.email === body.email)) {
       return HttpResponse.json(
         {
-          message: 'Пользователь уже существует',
+          message: 'This user already exist',
           code: 'USER_EXISTS',
         },
         { status: 400 }
@@ -61,8 +63,11 @@ export const authHandlers = [
 
     const token = `mock-token-${Date.now()}`;
     mockUsers.push(newUser);
+
     userPasswords.set(body.email, body.password);
     mockTokens.set(body.email, token);
+
+    console.log(mockUsers, 'users');
 
     return HttpResponse.json(
       {

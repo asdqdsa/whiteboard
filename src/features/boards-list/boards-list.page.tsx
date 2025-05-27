@@ -1,5 +1,4 @@
 import { rqClient } from '@/shared/api/instance';
-import { cn } from '@/shared/lib/css';
 import { CONFIG } from '@/shared/model/config';
 import { ROUTES } from '@/shared/model/routes';
 import { Button } from '@/shared/ui/kit/button';
@@ -56,7 +55,7 @@ function BoardsListPage() {
 
       <div className='grid grid-cols-3 gap-3'>
         {boardsQuery.data?.map((board) => (
-          <Card key={board.id} className={cn('bg-amber-50')}>
+          <Card key={board.id}>
             <CardHeader>
               <Button asChild variant='link'>
                 <Link to={href(ROUTES.BOARD, { boardId: board.id })}>
