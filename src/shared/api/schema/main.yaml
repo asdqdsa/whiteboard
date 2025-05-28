@@ -4,8 +4,14 @@ info:
   description: API for whiteboard notes oriented application
   version: 1.0.0
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
-  paths:
   /auth/login:
     post:
       $ref: './endpoints/auth.yaml#/login'
@@ -13,6 +19,10 @@ paths:
   /auth/signup:
     post:
       $ref: './endpoints/auth.yaml#/signup'
+
+  /auth/refresh:
+    post:
+      $ref: './endpoints/auth.yaml#/refresh'
 
   /boards:
     get:

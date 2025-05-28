@@ -8,13 +8,18 @@ import { href, Link } from 'react-router-dom';
 
 function BoardsListPage() {
   const queryClient = useQueryClient();
-  const boardsQuery = rqClient.useQuery('get', '/boards', {
-    onSettled: async () => {
-      await queryClient.invalidateQueries(
-        rqClient.queryOptions('get', '/boards')
-      );
-    },
-  });
+  const boardsQuery = rqClient.useQuery('get', '/boards');
+  // const boardsQuery = rqClient.useQuery('get', '/boards', {
+  //   onSettled: async () => {
+  //     await queryClient.invalidateQueries(
+  //       rqClient.queryOptions('get', '/boards')
+  //     );
+  //   },
+  // });
+
+  // check refresh token
+  // const { data } = rqClient.useQuery('post', '/auth/refresh');
+  // console.log(data, 'data');
 
   const createBoardMutation = rqClient.useMutation('post', '/boards', {
     onSettled: async () => {
