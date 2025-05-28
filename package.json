@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "api": "npx openapi-typescript ./src/shared/api/schema/main.yaml -o ./src/shared/api/schema/generated.ts"
+    "api": "npx openapi-typescript ./src/shared/api/schema/main.yaml -o ./src/shared/api/schema/generated.ts",
+    "openapi:lint": "npx @redocly/cli@latest lint ./src/shared/api/schema/main.yaml",
+    "openapi:bundle": "npx @redocly/cli@latest bundle ./src/shared/api/schema/main.yaml -o ./bundle.yaml",
+    "openapi:pack": "npm run openapi:lint && npm run openapi:bundle"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
