@@ -11,11 +11,11 @@ const userPasswords = new Map<string, string>();
 const mockUsers: ApiSchemas['User'][] = [
   {
     id: '1',
-    email: 'admin@gmail.com',
+    email: 'admin@mail.com',
   },
 ];
 
-userPasswords.set('admin@gmail.com', '123456');
+userPasswords.set('admin@mail.com', '1234');
 
 export const authHandlers = [
   http.post('/auth/login', async ({ request }) => {
@@ -58,7 +58,7 @@ export const authHandlers = [
   http.post('/auth/signup', async ({ request }) => {
     const body = await request.json();
 
-    await delay();
+    await delay(1200);
 
     if (mockUsers.some((u) => u.email === body.email)) {
       return HttpResponse.json(

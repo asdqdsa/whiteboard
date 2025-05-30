@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { href, Link } from 'react-router-dom';
 
 function BoardsListPage() {
+  console.log('board list');
   const queryClient = useQueryClient();
   const boardsQuery = rqClient.useQuery('get', '/boards');
   // const boardsQuery = rqClient.useQuery('get', '/boards', {
