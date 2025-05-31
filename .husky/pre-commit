@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "🧼 Running Prettier & ESLint before commit..."
+npx lint-staged || exit 1
