@@ -1,11 +1,7 @@
 import { delay, HttpResponse } from 'msw';
 import { http } from '@/shared/api/mocks/http';
 import type { ApiSchemas } from '@/shared/api/schema';
-import {
-  createRefreshTokenCookie,
-  generateTokens,
-  verifyToken,
-} from '../session';
+import { createRefreshTokenCookie, generateTokens, verifyToken } from '../session';
 
 const userPasswords = new Map<string, string>();
 const mockUsers: ApiSchemas['User'][] = [
@@ -32,7 +28,7 @@ export const authHandlers = [
           message: 'Incorrect email or password',
           code: 'INVALID_CREDENTIALS',
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -51,7 +47,7 @@ export const authHandlers = [
         headers: {
           'Set-Cookie': createRefreshTokenCookie(refreshToken),
         },
-      }
+      },
     );
   }),
 
@@ -66,7 +62,7 @@ export const authHandlers = [
           message: 'This user already exist',
           code: 'USER_EXISTS',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -96,7 +92,7 @@ export const authHandlers = [
         headers: {
           'Set-Cookie': createRefreshTokenCookie(refreshToken),
         },
-      }
+      },
     );
   }),
 
@@ -109,7 +105,7 @@ export const authHandlers = [
           message: 'Refresh token is missing',
           code: 'REFRESH_TOKEN_MISSING',
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -121,11 +117,10 @@ export const authHandlers = [
         throw new Error('User not found');
       }
 
-      const { accessToken, refreshToken: newRefreshToken } =
-        await generateTokens({
-          userId: user.id,
-          email: user.email,
-        });
+      const { accessToken, refreshToken: newRefreshToken } = await generateTokens({
+        userId: user.id,
+        email: user.email,
+      });
 
       return HttpResponse.json(
         {
@@ -137,7 +132,7 @@ export const authHandlers = [
           headers: {
             'Set-Cookie': createRefreshTokenCookie(newRefreshToken),
           },
-        }
+        },
       );
     } catch (error) {
       console.error('Error refreshing token:', error);
@@ -146,7 +141,7 @@ export const authHandlers = [
           message: 'Invalid refresh token',
           code: 'INVALID_REFRESH_TOKEN',
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }),

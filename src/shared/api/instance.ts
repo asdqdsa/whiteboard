@@ -37,7 +37,7 @@ fetchClient.use({
           code: 'NOT_AUTHORIZED',
           message: 'You are not authorized to access this resource',
         } as ApiSchemas['Error']),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        { status: 401, headers: { 'Content-Type': 'application/json' } },
       );
     }
   },

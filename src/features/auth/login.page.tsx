@@ -13,16 +13,16 @@ export function LoginPage() {
   return (
     <AuthLayout
       title={'Welcome back'}
-      description='Enter your email and password'
+      description="Enter your email and password"
       footerText={
         <>
           Don't have an account?{' '}
-          <Link className='underline text-primary' to={ROUTES.SIGNUP}>
+          <Link className="text-primary underline" to={ROUTES.SIGNUP}>
             Sign Up
           </Link>
         </>
       }
-      form={<LoginForm submitText='Log In' />}
+      form={<LoginForm submitText="Log In" />}
     />
   );
 }

@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/shared/ui/kit/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/shared/ui/kit/card';
 
 export function AuthLayout({
   form,
@@ -19,17 +12,15 @@ export function AuthLayout({
   footerText: React.ReactNode;
 }) {
   return (
-    <main className='flex flex-col items-center pt-[200px]'>
+    <main className="flex flex-col items-center pt-[200px]">
       <Card>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription className='text-xs'>{description}</CardDescription>
+          <CardDescription className="text-xs">{description}</CardDescription>
         </CardHeader>
         <CardContent>{form}</CardContent>
         <CardFooter>
-          <p className='text-xs text-muted-foreground [&_a]:underline [&_a]:text-primary'>
-            {footerText}
-          </p>
+          <p className="text-muted-foreground [&_a]:text-primary text-xs [&_a]:underline">{footerText}</p>
         </CardFooter>
       </Card>
     </main>

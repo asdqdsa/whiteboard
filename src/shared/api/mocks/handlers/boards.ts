@@ -35,15 +35,8 @@ export const boardsHandlers = [
     await verifyTokenOrThrow(request);
     const { boardId } = params;
     const index = boards.findIndex((board) => board.id === boardId);
-    if (index === -1)
-      return HttpResponse.json(
-        { message: 'Board not found', code: 'NOT_FOUND' },
-        { status: 404 }
-      );
+    if (index === -1) return HttpResponse.json({ message: 'Board not found', code: 'NOT_FOUND' }, { status: 404 });
     boards.splice(index, 1);
-    return HttpResponse.json(
-      { message: 'Board deleted', code: 'OK' },
-      { status: 204 }
-    );
+    return HttpResponse.json({ message: 'Board deleted', code: 'OK' }, { status: 204 });
   }),
 ];

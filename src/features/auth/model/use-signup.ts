@@ -19,9 +19,7 @@ export function useSignup() {
     signupMutation.mutate({ body: data });
   };
 
-  const errorMessage = signupMutation.isError
-    ? signupMutation.error
-    : undefined;
+  const errorMessage = signupMutation.isError ? signupMutation.error : undefined;
 
   return {
     signup,
