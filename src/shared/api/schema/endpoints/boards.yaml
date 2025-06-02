@@ -13,17 +13,17 @@ schemas:
         type: string
       name:
         type: string
-    createdAt:
-      type: string
-      format: date-time
-    updatedAt:
-      type: string
-      format: date-time
-    lastOpenedAt:
-      type: string
-      format: date-time
-    isFavorite:
-      type: boolean
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      lastOpenedAt:
+        type: string
+        format: date-time
+      isFavorite:
+        type: boolean
   RenameBoard:
     type: object
     required:
@@ -54,14 +54,6 @@ schemas:
       totalPages:
         type: integer
 
-  # CreateBoard:
-  #   type: object
-  #   required:
-  #     - name
-  #   properties:
-  #     name:
-  #       type: string
-
 getAllBoards:
   summary: Get all boards for current user
   security:
@@ -84,7 +76,6 @@ getAllBoards:
       required: false
       schema:
         type: string
-        default: createdAt
         enum:
           - createdAt
           - updatedAt
@@ -100,7 +91,6 @@ getAllBoards:
       required: false
       schema:
         type: string
-
   responses:
     '200':
       description: List of boards
@@ -137,12 +127,6 @@ createBoard:
   summary: Create a new board
   security:
     - bearerAuth: []
-  # requestBody:
-  #   required: true
-  #   content:
-  #     application/json:
-  #       schema:
-  #         $ref: '#/schemas/CreateBoard'
   responses:
     '201':
       description: Board created successfully
@@ -187,7 +171,7 @@ updateBoardFavorite:
     - name: boardId
       in: path
       required: true
-      shema:
+      schema:
         type: string
   requestBody:
     required: true

@@ -369,6 +369,13 @@ export interface components {
     Board: {
       id: string;
       name: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      /** Format: date-time */
+      lastOpenedAt: string;
+      isFavorite: boolean;
     };
     BoardsList: {
       list: components['schemas']['Board'][];
