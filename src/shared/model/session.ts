@@ -15,7 +15,9 @@ const TOKEN_KEY = 'token-whiteboard';
 let refreshTokenPromise: Promise<string | null> | null = null;
 
 export const useSession = createGStore(() => {
-  const [token, setToken] = useState<null | string>(() => localStorage.getItem(TOKEN_KEY));
+  const [token, setToken] = useState<null | string>(() =>
+    localStorage.getItem(TOKEN_KEY),
+  );
 
   const login = (token: string) => {
     localStorage.setItem(TOKEN_KEY, token);
