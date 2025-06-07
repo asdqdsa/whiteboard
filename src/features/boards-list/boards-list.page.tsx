@@ -1,10 +1,8 @@
-import { CONFIG } from '@/shared/model/config';
 import { ROUTES } from '@/shared/model/routes';
 import { Button } from '@/shared/ui/kit/button';
 import { Card, CardFooter, CardHeader } from '@/shared/ui/kit/card';
 import { Link, href } from 'react-router-dom';
 import { Input } from '@/shared/ui/kit/input';
-import { Label } from '@/shared/ui/kit/label';
 import {
   Select,
   SelectContent,
@@ -13,14 +11,20 @@ import {
   SelectValue,
 } from '@/shared/ui/kit/select';
 import { Switch } from '@/shared/ui/kit/switch';
-import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/kit/tabs';
 import { useBoardsList } from './use-boards-list';
 import { useBoardsFilters } from './use-boards-filter';
 import { useDebounce } from '@/shared/lib/react';
-import { useCreateBoard } from './use-create-board';
+// import { useCreateBoard } from './use-create-board';
 import { useDeleteBoard } from './use-delete-board';
 import { useUpdateFavorite } from './use-update-favorite';
 import { StarIcon } from 'lucide-react';
+import {
+  BoardsListLayout,
+  BoardsListLayoutFilters,
+  BoardsListLayoutHeader,
+} from './boards-list-layout';
+import { ViewModeToggle, type ViewMode } from './view-mode-toggle';
+import { useState } from 'react';
 
 type BoardsSortOption = 'createdAt' | 'updatedAt' | 'lastOpenedAt' | 'name';
 
@@ -31,67 +35,92 @@ function BoardsListPage() {
     search: useDebounce(boardsFilters.search),
   });
 
-  const createBoard = useCreateBoard();
+  // const createBoard = useCreateBoard();
   const deleteBoard = useDeleteBoard();
   const updateFavorite = useUpdateFavorite();
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-6 text-2xl font-bold">Доски {CONFIG.API_BASE_URL}</h1>
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
 
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+  return (
+    <BoardsListLayout
+      header={
+        <BoardsListLayoutHeader
+          title="Boards"
+          description="Here you can setup your boards"
+          actions={
+            <ViewModeToggle
+              value={viewMode}
+              onChange={(value) => setViewMode(value)}
+            />
+            // <Button
+            //   className="flex items-center gap-2 px-3 py-2"
+            //   type="button"
+            //   disabled={createBoard.isPending}
+            //   onClick={createBoard.createBoard}
+            // >
+            //   <PlusIcon className="h-4 w-4" />
+            //   <span className="leading-none">Create Board</span>
+            // </Button>
+          }
+        />
+      }
+      filters={
+        <BoardsListLayoutFilters
+          sort={
+            <Select
+              value={boardsFilters.sort}
+              onValueChange={(value) =>
+                boardsFilters.setSort(value as BoardsSortOption)
+              }
+            >
+              <SelectTrigger id="sort" className="w-full">
+                <SelectValue placeholder="Сортировка" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lastOpenedAt">По дате открытия</SelectItem>
+                <SelectItem value="createdAt">По дате создания</SelectItem>
+                <SelectItem value="updatedAt">По дате обновления</SelectItem>
+                <SelectItem value="name">По имени</SelectItem>
+              </SelectContent>
+            </Select>
+          }
+          filters={
+            <Input
+              id="search"
+              placeholder="Введите название доски..."
+              value={boardsFilters.search}
+              className="w-full"
+              onChange={(e) => boardsFilters.setSearch(e.target.value)}
+            />
+          }
+          actions={
+            <ViewModeToggle
+              value={viewMode}
+              onChange={(value) => setViewMode(value)}
+            />
+          }
+        />
+      }
+    >
+      {/* <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
         <div className="md:col-span-3">
           <Label htmlFor="search">Поиск</Label>
-          <Input
-            id="search"
-            placeholder="Введите название доски..."
-            value={boardsFilters.search}
-            onChange={(e) => boardsFilters.setSearch(e.target.value)}
-            className="w-full"
-          />
         </div>
 
         <div className="flex flex-col">
           <Label htmlFor="sort">Сортировка</Label>
-          <Select
-            value={boardsFilters.sort}
-            onValueChange={(value) =>
-              boardsFilters.setSort(value as BoardsSortOption)
-            }
-          >
-            <SelectTrigger id="sort" className="w-full">
-              <SelectValue placeholder="Сортировка" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="lastOpenedAt">По дате открытия</SelectItem>
-              <SelectItem value="createdAt">По дате создания</SelectItem>
-              <SelectItem value="updatedAt">По дате обновления</SelectItem>
-              <SelectItem value="name">По имени</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
       </div>
-
-      <Tabs defaultValue="all" className="mb-6">
-        <TabsList>
-          <TabsTrigger value="all" onClick={() => console.log()}>
-            Все доски
-          </TabsTrigger>
-          <TabsTrigger value="favorites" onClick={() => console.log('click')}>
-            Избранные
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
 
       <div className="mb-8">
         <Button
           type="button"
-          onClick={createBoard.createBoard}
           disabled={createBoard.isPending}
+          onClick={createBoard.createBoard}
         >
           Создать доску
         </Button>
-      </div>
+      </div> */}
 
       {boardsQuery.isPending ? (
         <div className="py-10 text-center">Загрузка...</div>
@@ -159,8 +188,15 @@ function BoardsListPage() {
           )}
         </>
       )}
-    </div>
+    </BoardsListLayout>
   );
+
+  //  (
+  //   <div className="container mx-auto p-4">
+  //     <h1 className="mb-6 text-2xl font-bold">Доски {CONFIG.API_BASE_URL}</h1>
+
+  //   </div>
+  // );
 }
 
 export const Component = BoardsListPage;
