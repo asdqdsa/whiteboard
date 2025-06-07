@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import { eslintBoundariesConfig } from './eslint.boundaries.js';
 import prettier from 'eslint-config-prettier';
+import react from 'eslint-plugin-react';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -16,12 +17,18 @@ export default tseslint.config(
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       globals: globals.browser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      react: react,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -35,6 +42,16 @@ export default tseslint.config(
         {
           args: 'none',
           destructuredArrayIgnorePattern: '^_',
+        },
+      ],
+      'react/jsx-sort-props': [
+        'warn',
+        {
+          callbacksLast: true,
+          shorthandFirst: true,
+          noSortAlphabetically: true,
+          reservedFirst: true,
+          ignoreCase: true,
         },
       ],
     },
