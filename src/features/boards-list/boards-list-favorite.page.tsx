@@ -1,32 +1,20 @@
-import { Button } from '@/shared/ui/kit/button';
 import { useBoardsList } from './model/use-boards-list';
-import { useBoardsFilters } from './model/use-boards-filter';
-import { useDebounce } from '@/shared/lib/react';
-import { useCreateBoard } from './model/use-create-board';
 import { useDeleteBoard } from './model/use-delete-board';
 import { useUpdateFavorite } from './model/use-update-favorite';
 import {
   BoardsListCardsLayout,
   BoardsListLayout,
   BoardsListLayoutContent,
-  BoardsListLayoutFilters,
   BoardsListLayoutHeader,
   BoardsListListLayout,
 } from './ui/boards-list-layout';
 import { ViewModeToggle, type ViewMode } from './ui/view-mode-toggle';
 import { useState } from 'react';
-import { BoardsSortSelector } from './ui/boards-sort-select';
-import { BoardsSearchInput } from './ui/boards-search-input';
 import { BoardsListCard } from './ui/boards-list-card';
 
-function BoardsListPage() {
-  const boardsFilters = useBoardsFilters();
-  const boardsQuery = useBoardsList({
-    sort: boardsFilters.sort,
-    search: useDebounce(boardsFilters.search),
-  });
+export function BoardsListFavoritePage() {
+  const boardsQuery = useBoardsList({ isFavorite: true });
 
-  const createBoard = useCreateBoard();
   const deleteBoard = useDeleteBoard();
   const updateFavorite = useUpdateFavorite();
 
@@ -36,33 +24,8 @@ function BoardsListPage() {
     <BoardsListLayout
       header={
         <BoardsListLayoutHeader
-          title="Boards"
-          description="Here you can setup your boards"
-          actions={
-            <Button
-              type="button"
-              disabled={createBoard.isPending}
-              onClick={createBoard.createBoard}
-            >
-              Создать доску
-            </Button>
-          }
-        />
-      }
-      filters={
-        <BoardsListLayoutFilters
-          sort={
-            <BoardsSortSelector
-              value={boardsFilters.sort}
-              onValueChange={boardsFilters.setSort}
-            />
-          }
-          filters={
-            <BoardsSearchInput
-              value={boardsFilters.search}
-              onChange={boardsFilters.setSearch}
-            />
-          }
+          title="Favorite Boards"
+          description="Here you can setup your favorite boards"
           actions={
             <ViewModeToggle
               value={viewMode}
@@ -111,4 +74,4 @@ function BoardsListPage() {
   );
 }
 
-export const Component = BoardsListPage;
+export const Component = BoardsListFavoritePage;
