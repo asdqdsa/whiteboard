@@ -3,37 +3,32 @@ import { useBoardsList } from './model/use-boards-list';
 import { useBoardsFilters } from './model/use-boards-filter';
 import { useDebounce } from '@/shared/lib/react';
 import { useCreateBoard } from './model/use-create-board';
-import { useDeleteBoard } from './model/use-delete-board';
-import { useUpdateFavorite } from './model/use-update-favorite';
 import {
-  BoardsListCardsLayout,
   BoardsListLayout,
   BoardsListLayoutContent,
   BoardsListLayoutFilters,
   BoardsListLayoutHeader,
-  BoardsListListLayout,
 } from './ui/boards-list-layout';
 import { ViewModeToggle, type ViewMode } from './ui/view-mode-toggle';
 import { useState } from 'react';
 import { BoardsSortSelector } from './ui/boards-sort-select';
 import { BoardsSearchInput } from './ui/boards-search-input';
-import { BoardsListCard } from './ui/boards-list-card';
+import { BoardCard } from './compose/board-card';
+import { BoardItem } from './compose/board-item';
+import { BoardsSidebar } from './ui/boards-sidebar';
 
 function BoardsListPage() {
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const boardsFilters = useBoardsFilters();
   const boardsQuery = useBoardsList({
     sort: boardsFilters.sort,
     search: useDebounce(boardsFilters.search),
   });
-
   const createBoard = useCreateBoard();
-  const deleteBoard = useDeleteBoard();
-  const updateFavorite = useUpdateFavorite();
-
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
 
   return (
     <BoardsListLayout
+      sidebar={<BoardsSidebar />}
       header={
         <BoardsListLayoutHeader
           title="Boards"
@@ -44,7 +39,7 @@ function BoardsListPage() {
               disabled={createBoard.isPending}
               onClick={createBoard.createBoard}
             >
-              Создать доску
+              Create Board
             </Button>
           }
         />
@@ -78,35 +73,18 @@ function BoardsListPage() {
         hasCursor={boardsQuery.hasNextPage}
         isPendingNext={boardsQuery.isFetchingNextPage}
         cursorRef={boardsQuery.cursorRef}
-      >
-        {viewMode === 'list' ? (
-          <BoardsListListLayout>
-            {boardsQuery.boards?.map((board) => (
-              <BoardsListCard
-                key={board.id}
-                board={board}
-                isFavorite={updateFavorite.isOptimisticFavorite(board)}
-                isDeletePending={deleteBoard.getIsPending(board.id)}
-                onFavoriteToggle={() => updateFavorite.toggle(board)}
-                onDelete={() => deleteBoard.deleteBoard(board.id)}
-              />
-            ))}
-          </BoardsListListLayout>
-        ) : (
-          <BoardsListCardsLayout>
-            {boardsQuery.boards?.map((board) => (
-              <BoardsListCard
-                key={board.id}
-                board={board}
-                isFavorite={updateFavorite.isOptimisticFavorite(board)}
-                isDeletePending={deleteBoard.getIsPending(board.id)}
-                onFavoriteToggle={() => updateFavorite.toggle(board)}
-                onDelete={() => deleteBoard.deleteBoard(board.id)}
-              />
-            ))}
-          </BoardsListCardsLayout>
-        )}
-      </BoardsListLayoutContent>
+        mode={viewMode}
+        renderList={() =>
+          boardsQuery.boards?.map((board) => (
+            <BoardItem key={board.id} board={board} />
+          ))
+        }
+        renderGrid={() =>
+          boardsQuery.boards?.map((board) => (
+            <BoardCard key={board.id} board={board} />
+          ))
+        }
+      />
     </BoardsListLayout>
   );
 }

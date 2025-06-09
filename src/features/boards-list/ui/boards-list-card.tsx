@@ -1,8 +1,6 @@
 import { ROUTES } from '@/shared/model/routes';
 import { Button } from '@/shared/ui/kit/button';
 import { Card, CardFooter, CardHeader } from '@/shared/ui/kit/card';
-import { Switch } from '@/shared/ui/kit/switch';
-import { StarIcon } from 'lucide-react';
 import { href, Link } from 'react-router-dom';
 
 interface BoardsListCardProps {
@@ -12,21 +10,25 @@ interface BoardsListCardProps {
     createdAt: string;
     lastOpenedAt: string;
   };
-  isFavorite: boolean;
-  onFavoriteToggle: () => void;
-  onDelete: () => void;
-  isDeletePending: boolean;
+  // isFavorite: boolean;
+  // onFavoriteToggle: () => void;
+  // onDelete: () => void;
+  // isDeletePending: boolean;
+  rightTopActoins?: React.ReactNode;
+  bottomActions?: React.ReactNode;
 }
 export function BoardsListCard({
   board,
-  isFavorite,
-  onFavoriteToggle,
-  onDelete,
-  isDeletePending,
+  rightTopActoins,
+  bottomActions,
+  // isFavorite,
+  // onFavoriteToggle,
+  // onDelete,
+  // isDeletePending,
 }: BoardsListCardProps) {
   return (
     <Card key={board.id} className="relative">
-      <div className="absolute top-2 right-2 flex flex-row-reverse items-center gap-2">
+      {/* <div className="absolute top-2 right-2 flex flex-row-reverse items-center gap-2">
         <span className="text-sm text-gray-500">
           <StarIcon />
         </span>
@@ -34,7 +36,12 @@ export function BoardsListCard({
         <span className="text-sm text-gray-500">
           {isFavorite ? 'В избранном' : ''}
         </span>
-      </div>
+      </div> */}
+      {/* <BoardsFavoriteToggle
+        isFavorite={isFavorite}
+        onToggle={onFavoriteToggle}
+      /> */}
+      {rightTopActoins}
       <CardHeader>
         <div className="flex flex-col gap-2">
           <Button
@@ -55,7 +62,7 @@ export function BoardsListCard({
           </div>
         </div>
       </CardHeader>
-      <CardFooter>
+      {/* <CardFooter>
         <Button
           variant="destructive"
           disabled={isDeletePending}
@@ -63,7 +70,8 @@ export function BoardsListCard({
         >
           Удалить
         </Button>
-      </CardFooter>
+      </CardFooter> */}
+      {bottomActions && <CardFooter>{bottomActions}</CardFooter>}
     </Card>
   );
 }
