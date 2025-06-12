@@ -9,7 +9,7 @@ export function AppHeader() {
   // if (!session) return null;
 
   return (
-    <header className="bg-background border-border/40 mb-6 border-b px-4 py-3 shadow-sm">
+    <header className="bg-background border-border/40 border-b px-4 py-3 shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <div className="text-xl font-semibold">
           <Link to={ROUTES.HOME}>Whiteboard</Link>
@@ -17,8 +17,15 @@ export function AppHeader() {
 
         {session ? (
           <div className="flex items-center gap-4">
-            <span className="text-muted-foreground text-sm">{session.email}</span>
-            <Button variant="outline" size="sm" onClick={() => logout()} className="hover:bg-destructive/10">
+            <span className="text-muted-foreground text-sm">
+              {session.email}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="hover:bg-destructive/10"
+              onClick={() => logout()}
+            >
               Logout
             </Button>
           </div>

@@ -40,6 +40,10 @@ export const router = createBrowserRouter([
             path: ROUTES.BOARD,
             lazy: () => import('@/features/board/board.page'),
           },
+          {
+            path: ROUTES.DRAW,
+            lazy: () => import('@/features/board/board.page'),
+          },
         ],
       },
       {
@@ -52,7 +56,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.HOME,
-        loader: () => redirect(ROUTES.BOARDS),
+        loader: () => redirect(ROUTES.DRAW),
       },
     ],
   },

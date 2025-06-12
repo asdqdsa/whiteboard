@@ -8,6 +8,7 @@ export const ROUTES = {
   BOARDS: '/boards',
   FAVORITE_BOARDS: '/boards/favorite',
   RECENT_BOARDS: '/boards/recent',
+  DRAW: '/draw',
 } as const;
 
 export type PathParams = {
