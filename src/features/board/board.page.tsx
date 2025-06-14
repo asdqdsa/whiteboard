@@ -3,9 +3,10 @@ import { Button } from '@/shared/ui/kit/button';
 import { ArrowRightIcon, StickerIcon } from 'lucide-react';
 // import { useParams } from 'react-router-dom';
 import { useNodes } from './nodes';
-import { useBoardViewState } from './view-state';
+import { useViewModel } from './view-model';
 import { useEffect, useRef, type Ref } from 'react';
 import { useCanvasRect } from './use-canvas-rect';
+import { cn } from '@/shared/lib/css';
 
 function useLayoutFocus() {
   const focusLayoutRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ function useLayoutFocus() {
 
 function BoardPage() {
   const { nodes, addSticker } = useNodes();
-  const { viewState, goToAddSticker, goToIdle } = useBoardViewState();
+  const viewModel = useViewModel();
   const { canvasRef, canvasRect } = useCanvasRect();
   const { focusLayoutRef } = useLayoutFocus();
   console.log(canvasRect);
@@ -40,11 +41,11 @@ function BoardPage() {
     <Layout
       ref={focusLayoutRef}
       onKeyDown={({ key }: React.KeyboardEvent) => {
-        if (viewState.type === 'add-sticker') {
-          if (key === 'Escape') goToIdle();
+        if (viewModel.viewState.type === 'add-sticker') {
+          if (key === 'Escape') viewModel.goToIdle();
         }
-        if (viewState.type === 'idle') {
-          if (key.toLocaleLowerCase() === 's') goToAddSticker();
+        if (viewModel.viewState.type === 'idle') {
+          if (key.toLocaleLowerCase() === 's') viewModel.goToAddSticker();
         }
       }}
     >
@@ -52,7 +53,7 @@ function BoardPage() {
       <Canvas
         ref={canvasRef}
         onClick={({ clientX, clientY }) => {
-          if (viewState.type === 'add-sticker' && canvasRect) {
+          if (viewModel.viewState.type === 'add-sticker' && canvasRect) {
             addSticker({
               text: 'canvasDefault',
               x: clientX - canvasRect.x,
@@ -63,15 +64,33 @@ function BoardPage() {
         }}
       >
         {nodes.map(({ id, x, y, text }) => (
-          <Sticker key={id} text={text} x={x} y={y} />
+          <Sticker
+            key={id}
+            text={text}
+            x={x}
+            y={y}
+            selected={
+              viewModel.viewState.type === 'idle' &&
+              viewModel.viewState.selectedIds.has(id)
+            }
+            onClick={(e) => {
+              if (viewModel.viewState.type === 'idle') {
+                if (e.ctrlKey || e.shiftKey) {
+                  viewModel.selection([id], 'toggle');
+                } else {
+                  viewModel.selection([id], 'replace');
+                }
+              }
+            }}
+          />
         ))}
       </Canvas>
       <Actions>
         <ActionButton
-          isActive={viewState.type === 'add-sticker'}
+          isActive={viewModel.viewState.type === 'add-sticker'}
           onClick={() => {
-            if (viewState.type === 'idle') goToAddSticker();
-            else goToIdle();
+            if (viewModel.viewState.type === 'idle') viewModel.goToAddSticker();
+            else viewModel.goToIdle();
           }}
         >
           <StickerIcon />
@@ -131,14 +150,30 @@ function Canvas({
   );
 }
 
-function Sticker({ text, x, y }: { text: string; x: number; y: number }) {
+function Sticker({
+  text,
+  x,
+  y,
+  onClick,
+  selected,
+}: {
+  text: string;
+  x: number;
+  y: number;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  selected: boolean;
+}) {
   return (
-    <div
-      className="absolute rounded-xs bg-emerald-900 px-2 py-4 shadow-md"
+    <button
+      className={cn(
+        'absolute rounded-xs bg-emerald-900 px-2 py-4 shadow-md',
+        selected && 'outline outline-2 outline-blue-400',
+      )}
       style={{ transform: `translate(${x}px, ${y}px)` }}
+      onClick={onClick}
     >
       {text}
-    </div>
+    </button>
   );
 }
 
